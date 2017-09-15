@@ -10,7 +10,10 @@ Team
  - Sarathram Subbaraman
  - Riccardo Volpato
  - Sergey Nam
+----------
 
+#Useful Resources:
+- ERC20 Token Standard https://theethereum.wiki/w/index.php/ERC20_Token_Standard
 
 ----------
 Disclaimer:
