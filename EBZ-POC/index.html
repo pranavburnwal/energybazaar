@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>EnergyBazaar Proof of Concept</title>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+  <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+</head>
+<body class="container" onload="loadHouseholds()">
+  <h1>Energy Bazaar Proof of Concept</h1>
+  <div style="text-align: left;">
+    <div style="font-size: 24px" id="clock"></div>
+    <a onclick='runSimulation();' class="btn btn-primary">Run Simulation</a>
+  </div>
+  <div class="col-md-6" style="text-align: center;"> 
+    <h3>Household Singh</h3>
+    <br>
+    <p style="font-weight: bold;">Smart meter</p>
+    <div class="table-responsive">
+      <table class="table">
+        <tbody>
+          <tr>
+            <td class="col-md-3" style="font-weight: bold;">Current electricy</td>
+            <td id="A_current"></td>
+          </tr>
+          <tr>
+            <td class="col-md-3" style="font-weight: bold;">Energy status</td>
+            <td id="A_status">
+                <div id="A_demand" style="background-color:#db2323;padding: 1px;display:none;">DEMANDING ENERGY</div>
+                <div id="A_balance" style="background-color:#dddddd;padding: 1px;display: block;">IN BALANCE</div></div>
+                <div id="A_supply" style="background-color:#50b84c;padding: 1px;display:none">SUPPLYING ENERGY</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="col-md-3" style="font-style: italic;">Initial energy</td>
+            <td><input type="number" id="A_initial" value="5" onchange="loadHouseholds();"></td>
+          </tr>
+          <tr>
+            <td class="col-md-3">Capacity</td>
+            <td><input type="number" id="A_capacity" value="20" onchange="loadHouseholds();"></td>
+          </tr>
+          <tr>
+            <td class="col-md-3">Consumption rate</td>
+            <td><input type="number" id="A_consumption" value="1" onchange="loadHouseholds();"></td>
+          </tr>
+          <tr>
+            <td class="col-md-3">Production rate</td>
+            <td><input type="number" id="A_generation" value="2" onchange="loadHouseholds();"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br>
+    <p style="font-weight: bold;">Smart wallet</p>
+    <div class="table-responsive">
+      <table class="table">
+        <tbody>
+          <tr>
+            <td class="col-md-3" style="font-weight: bold;">EBZ Address</td>
+            <td id="A_address"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="col-md-6" style="text-align: center;">
+    <h3>Household Chopra</h3>
+    <br>
+    <p style="font-weight: bold;">Smart meter</p>
+    <div class="table-responsive">
+      <table class="table">
+        <tbody>
+          <tr>
+            <td class="col-md-3" style="font-weight: bold;">Current electricy</td>
+            <td id="B_current"></td>
+          </tr>
+          <tr>
+            <td class="col-md-3" style="font-weight: bold;">Status</td>
+            <td id="B_status">
+                <div id="B_demand" style="background-color:#ff1a1a;padding: 1px;display:none;">DEMANDING ENERGY</div>
+                <div id="B_balance" style="background-color:#dddddd;padding: 1px;display: block;">IN BALANCE</div></div>
+                <div id="B_supply" style="background-color:#50b84c;padding: 1px;display:none">SUPPLYING ENERGY</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="col-md-3" style="font-style: italic;">Initial energy</td>
+            <td><input type="number" id="B_initial" value="15" onchange="loadHouseholds();"></td>
+          </tr>
+          <tr>
+            <td class="col-md-3">Capacity</td>
+            <td><input type="number" id="B_capacity" value="20" onchange="loadHouseholds();"></td>
+          </tr>
+          <tr>
+            <td class="col-md-3">Consumption rate</td>
+            <td><input type="number" id="B_consumption" value="2" onchange="loadHouseholds();"></td>
+          </tr>
+          <tr>
+            <td class="col-md-3">Production rate</td>
+            <td><input type="number" id="B_generation" value="0" onchange="loadHouseholds();"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+     <br>
+    <p style="font-weight: bold;">Smart wallet</p>
+    <div class="table-responsive">
+      <table class="table">
+        <tbody>
+          <tr>
+            <td class="col-md-3" style="font-weight: bold;">EBZ Address</td>
+            <td id="B_address"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+
+<script src="https://cdn.rawgit.com/ethereum/web3.js/develop/dist/web3.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
+<script src="./js/smart_contract.js"></script>
+<script src="./js/market_simulator.js"></script>
+</html>
