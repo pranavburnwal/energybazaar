@@ -30,7 +30,7 @@ function mintTokens(mintTokenToAddress,userAccountAddress){
 }
 
 function smartMeterApproval(SmartMeterAddress,SmartMeterOwnerAddress) {
-	return EnergyBazarContract.at(EnergyBazarAddress).approve(SmartMeterAddress, {from: SmartMeterOwnerAddress, data: EnergyBazarData, gas: '4700000'}).toString();
+	return EnergyBazarContract.at(EnergyBazarAddress).approve(SmartMeterAddress, {from: SmartMeterOwnerAddress, data: EnergyBazarData, gas: '4700000'});
 }
 
 function bunFrom(SmartMeterAddress,SmartMeterOwnerAddress) {
@@ -44,6 +44,7 @@ function donateTokens(fromAddress,tokensToDonate=1) {
 var BlockChainActive = 0;
 // Initiate users {A = 1, B = 2}
 function ActivateBlockchain() {
+	console.log(web3.eth.accounts);
 	BlockChainActive = 1;
 	$('#block').html("Deploying address: "+ web3.eth.accounts[0]);
 	$('#A_address').html(web3.eth.accounts[1]);
