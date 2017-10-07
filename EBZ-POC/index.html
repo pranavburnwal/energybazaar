@@ -5,6 +5,15 @@
   <title>EnergyBazaar Proof of Concept</title>
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
   <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.10.1/sweetalert2.all.min.js"></script>
+  <style>
+  .activate-warning {
+    background-color: #FEFAE3;
+    border: 1px solid #F0E1A1;
+    text-align: center;
+    color: #61534e;
+  }
+  </style>
 </head>
 <body class="container" onload="loadHouseholds()">
   <h1>Energy Bazaar Proof of Concept</h1>
@@ -20,7 +29,7 @@
     <div class="col-md-6" style="font-size:24px;text-align:right;margin-top: 5px;" id="clock"></div>
   </div>
 
-  <div class="col-md-6" style="text-align: center;"> 
+  <div id="singh-div" class="col-md-6" style="text-align: center;"> 
     <h3>Household Singh</h3>
     <br>
     <p style="font-weight: bold;">Smart meter</p>
@@ -28,7 +37,7 @@
       <table class="table">
         <tbody>
           <tr>
-            <td class="col-md-3" style="font-weight: bold;">Current electricy</td>
+            <td class="col-md-3" style="font-weight: bold;">Current available stored energy</td>
             <td id="A_current"></td>
           </tr>
           <tr>
@@ -41,19 +50,19 @@
           </tr>
           <tr>
             <td class="col-md-3" style="font-style: italic;">Initial energy</td>
-            <td><input type="number" id="A_initial" value="5" onchange="loadHouseholds();"></td>
+            <td><input type="number" id="A_initial" value="5" onchange="loadHouseholds();"> KwH</td>
           </tr>
           <tr>
             <td class="col-md-3">Capacity</td>
-            <td><input type="number" id="A_capacity" value="20" onchange="loadHouseholds();"></td>
+            <td><input type="number" id="A_capacity" value="20" onchange="loadHouseholds();"> KwH</td>
           </tr>
           <tr>
             <td class="col-md-3">Consumption rate</td>
-            <td><input type="number" id="A_consumption" value="1" onchange="loadHouseholds();"></td>
+            <td><input type="number" id="A_consumption" value="1" onchange="loadHouseholds();"> KwH</td>
           </tr>
           <tr>
             <td class="col-md-3">Production rate</td>
-            <td><input type="number" id="A_generation" value="2" onchange="loadHouseholds();"></td>
+            <td><input type="number" id="A_generation" value="2" onchange="loadHouseholds();"> KwH</td>
           </tr>
         </tbody>
       </table>
@@ -68,7 +77,7 @@
       <table class="table">
         <tbody>
           <tr>
-            <td class="col-md-3" style="font-weight: bold;">Current electricy</td>
+            <td class="col-md-3" style="font-weight: bold;">Current available stored energy</td>
             <td id="B_current"></td>
           </tr>
           <tr>
@@ -81,19 +90,19 @@
           </tr>
           <tr>
             <td class="col-md-3" style="font-style: italic;">Initial energy</td>
-            <td><input type="number" id="B_initial" value="15" onchange="loadHouseholds();"></td>
+            <td><input type="number" id="B_initial" value="15" onchange="loadHouseholds();"> KwH</td>
           </tr>
           <tr>
             <td class="col-md-3">Capacity</td>
-            <td><input type="number" id="B_capacity" value="20" onchange="loadHouseholds();"></td>
+            <td><input type="number" id="B_capacity" value="20" onchange="loadHouseholds();"> KwH</td>
           </tr>
           <tr>
             <td class="col-md-3">Consumption rate</td>
-            <td><input type="number" id="B_consumption" value="2" onchange="loadHouseholds();"></td>
+            <td><input type="number" id="B_consumption" value="2" onchange="loadHouseholds();"> KwH</td>
           </tr>
           <tr>
             <td class="col-md-3">Production rate</td>
-            <td><input type="number" id="B_generation" value="0" onchange="loadHouseholds();"></td>
+            <td><input type="number" id="B_generation" value="0" onchange="loadHouseholds();"> KwH</td>
           </tr>
         </tbody>
       </table>
@@ -114,6 +123,11 @@
             <td class="col-md-3">Tokens balance</td>
             <td id="A_tokens"></td>
           </tr>
+          <tr>
+            <td class="col-md-3">Actions</td>
+            <td><div id="A_minting" style="background-color:#50b84c;padding: 1px;display:none"></div>
+              <div id="A_using" style="background-color:#db2323;padding: 1px;display:none;"</div></td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -132,6 +146,11 @@
           <tr>
             <td class="col-md-3">Tokens balance</td>
             <td id="B_tokens"></td>
+          </tr>
+            <tr>
+            <td class="col-md-3">Actions</td>
+            <td><div id="B_minting" style="background-color:#50b84c;padding: 1px;display:none"></div>
+              <div id="B_using" style="background-color:#db2323;padding: 1px;display:none;"</div></td>
           </tr>
         </tbody>
       </table>
