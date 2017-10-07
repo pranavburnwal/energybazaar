@@ -107,7 +107,7 @@ function runSimulation() {
 	    	} else {
 	    		document.getElementById('clock').innerHTML = "Time " +  h + ":00";
 	    	}
-	    	var timer = setTimeout(marketDynamics, 3000);
+	    	var timer = setTimeout(marketDynamics, 1500);
 	    	if (h >= 24){
 				clearTimeout(timer);
 			};
@@ -131,14 +131,9 @@ function runSimulation() {
 				$('#A_using').html("<label>Household Singh: Using Tokens</label><div> EBZ account balance is: "
 					  + checkUserBalance(web3.eth.accounts[1]))
 				A.set_current(0);
-			} else {
-				// otherwise set to balancs
-				document.getElementById("A_demand").style.display = 'none';
-				document.getElementById("A_balance").style.display = 'block';
-				document.getElementById("A_supply").style.display = 'none';
-			};
-
-			if (A.get_current() > A.get_capacity()) {
+			} else if (A.get_current() > A.get_capacity()) {
+				// As A is producing more energy than what it can store, we now mint coins
+				// Set status to supplying
 				document.getElementById("A_demand").style.display = 'none';
 				document.getElementById("A_balance").style.display = 'none';
 				document.getElementById("A_supply").style.display = 'block';
@@ -146,7 +141,6 @@ function runSimulation() {
 					mintTokens(web3.eth.accounts[1],web3.eth.accounts[2]);
 				};
 				$('#A_tokens').html(checkUserBalance(web3.eth.accounts[1]));
-				// As A is producing more energy than what it can store, we now mint coins
 				document.getElementById("A_minting").style.display = 'block';
 				document.getElementById("A_using").style.display = 'none';
 				$('#A_minting').html("<label>Household Singh: Minting Tokens</label><div> Total available energy is: "
@@ -156,38 +150,31 @@ function runSimulation() {
 					  + "Household Singh EBZ account balance is now: " + checkUserBalance(web3.eth.accounts[1]))
 				A.set_current(A.get_capacity());
 			} else {
+				// otherwise set to balance
 				document.getElementById("A_demand").style.display = 'none';
 				document.getElementById("A_balance").style.display = 'block';
 				document.getElementById("A_supply").style.display = 'none';
 			};
 
 			B.set_current(B.get_current() + B.get_generation() - B.get_consumption());
-			
 			if (B.get_current() <= 0) {
-				// B available stored energy is lower than 0, so A is demanding
+				// B available stored energy is lower than 0, so B is demanding
 				// Set status to demanding
 				document.getElementById("B_demand").style.display = 'block';
 				document.getElementById("B_balance").style.display = 'none';
 				document.getElementById("B_supply").style.display = 'none';
 				$('#B_tokens').html(checkUserBalance(web3.eth.accounts[2]));
-				// As A is producing more energy than what it can store, we now mint coins
 				document.getElementById("B_using").style.display = 'block';
 				document.getElementById("B_minting").style.display = 'none';
 				$('#B_using').html("<label>Household Chopra: Using Tokens</label><div> EBZ account balance is: "
 					  + checkUserBalance(web3.eth.accounts[2]))
 				B.set_current(0);
-			} else {
-				console.log("YEY");
-				document.getElementById("B_demand").style.display = 'none';
-				document.getElementById("B_balance").style.display = 'block';
-				document.getElementById("B_supply").style.display = 'none';
-			};
-
-			if (B.get_current() > B.get_capacity()) {
+			} else if (B.get_current() > B.get_capacity()) {
+				// As B is producing more energy than what it can store, we now mint coins
+				// Set status to supplying
 				document.getElementById("B_demand").style.display = 'none';
 				document.getElementById("B_balance").style.display = 'none';
 				document.getElementById("B_supply").style.display = 'block';
-				// As B is producing more energy than what it can store, we now mint coins
 				for (i = 0; i < (B.get_current() - B.get_capacity()); i++) {
 					mintTokens(web3.eth.accounts[2],web3.eth.accounts[1]);
 				};
@@ -201,6 +188,7 @@ function runSimulation() {
 					  + "Household Singh EBZ account balance is now: " + checkUserBalance(web3.eth.accounts[2]))
 				B.set_current(B.get_capacity());
 			} else {
+				// otherwise set to balance
 				document.getElementById("B_demand").style.display = 'none';
 				document.getElementById("B_balance").style.display = 'block';
 				document.getElementById("B_supply").style.display = 'none';
