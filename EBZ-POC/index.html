@@ -17,7 +17,6 @@
 </head>
 <body class="container" onload="loadHouseholds()">
   <h1>Energy Bazaar Proof of Concept</h1>
-  <br>
   <div>
     <div class="col-md-6" style="text-align:left;">
       <a onclick='ActivateBlockchain();' class="btn btn-primary">ActivateBlockchain</a>
@@ -28,17 +27,15 @@
     <div class="col-md-6" style="font-size:16px;text-align:left;margin-top: 5px;" id="block">Deploying address: </div>
     <div class="col-md-6" style="font-size:24px;text-align:right;margin-top: 5px;" id="clock"></div>
   </div>
-
   <div id="singh-div" class="col-md-6" style="text-align: center;"> 
     <h3>Household Singh</h3>
-    <br>
     <p style="font-weight: bold;">Smart meter</p>
     <div class="table-responsive">
       <table class="table">
         <tbody>
           <tr>
             <td class="col-md-3" style="font-weight: bold;">Current available stored energy</td>
-            <td id="A_current"></td>
+            <td id="A_current" style="vertical-align: middle;"></td>
           </tr>
           <tr>
             <td class="col-md-3" style="font-weight: bold;">Energy status</td>
@@ -49,20 +46,16 @@
             </td>
           </tr>
           <tr>
-            <td class="col-md-3" style="font-style: italic;">Initial energy</td>
-            <td><input type="number" id="A_initial" value="5" onchange="loadHouseholds();"> KwH</td>
-          </tr>
-          <tr>
-            <td class="col-md-3">Capacity</td>
-            <td><input type="number" id="A_capacity" value="20" onchange="loadHouseholds();"> KwH</td>
+            <td class="col-md-3">Max storage capacity</td>
+            <td><input type="number" id="A_capacity" value="20" onchange="updateHouseholds();"> KwH</td>
           </tr>
           <tr>
             <td class="col-md-3">Consumption rate</td>
-            <td><input type="number" id="A_consumption" value="1" onchange="loadHouseholds();"> KwH</td>
+            <td><input type="number" id="A_consumption" value="1" onchange="updateHouseholds();"> KwH</td>
           </tr>
           <tr>
             <td class="col-md-3">Production rate</td>
-            <td><input type="number" id="A_generation" value="2" onchange="loadHouseholds();"> KwH</td>
+            <td><input type="number" id="A_generation" value="2" onchange="updateHouseholds();"> KwH</td>
           </tr>
         </tbody>
       </table>
@@ -71,14 +64,13 @@
 
   <div class="col-md-6" style="text-align: center;">
     <h3>Household Chopra</h3>
-    <br>
     <p style="font-weight: bold;">Smart meter</p>
     <div class="table-responsive">
       <table class="table">
         <tbody>
           <tr>
             <td class="col-md-3" style="font-weight: bold;">Current available stored energy</td>
-            <td id="B_current"></td>
+            <td id="B_current" style="vertical-align: middle;"></td>
           </tr>
           <tr>
             <td class="col-md-3" style="font-weight: bold;">Status</td>
@@ -89,20 +81,16 @@
             </td>
           </tr>
           <tr>
-            <td class="col-md-3" style="font-style: italic;">Initial energy</td>
-            <td><input type="number" id="B_initial" value="15" onchange="loadHouseholds();"> KwH</td>
-          </tr>
-          <tr>
-            <td class="col-md-3">Capacity</td>
-            <td><input type="number" id="B_capacity" value="20" onchange="loadHouseholds();"> KwH</td>
+            <td class="col-md-3">Max storage capacity</td>
+            <td><input type="number" id="B_capacity" value="20" onchange="updateHouseholds();"> KwH</td>
           </tr>
           <tr>
             <td class="col-md-3">Consumption rate</td>
-            <td><input type="number" id="B_consumption" value="2" onchange="loadHouseholds();"> KwH</td>
+            <td><input type="number" id="B_consumption" value="2" onchange="updateHouseholds();"> KwH</td>
           </tr>
           <tr>
             <td class="col-md-3">Production rate</td>
-            <td><input type="number" id="B_generation" value="0" onchange="loadHouseholds();"> KwH</td>
+            <td><input type="number" id="B_generation" value="0" onchange="updateHouseholds();"> KwH</td>
           </tr>
         </tbody>
       </table>
