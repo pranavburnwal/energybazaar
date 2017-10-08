@@ -5,7 +5,7 @@ var HouseHold = (function() {
     	this._generation = 0;
     	this._consumption = 0;
     	this._capacity = 10;
-    	this._current = 0;
+    	this._current = 1;
     };
 
     HouseHold.prototype.get_generation = function() {
@@ -114,7 +114,7 @@ function runSimulation() {
 	    	} else {
 	    		document.getElementById('clock').innerHTML = "Time " +  h + ":00";
 	    	}
-	    	var timer = setTimeout(marketDynamics, 1500);
+	    	var timer = setTimeout(marketDynamics, 4500);
 	    	if (h >= 24){
 				clearTimeout(timer);
 			};
@@ -172,6 +172,8 @@ function runSimulation() {
 				document.getElementById("A_demand").style.display = 'none';
 				document.getElementById("A_balance").style.display = 'block';
 				document.getElementById("A_supply").style.display = 'none';
+				document.getElementById("A_using").style.display = 'none';
+					document.getElementById("A_minting").style.display = 'none';
 			};
 
 			B.set_current(B.get_current() + B.get_generation() - B.get_consumption());
@@ -222,6 +224,8 @@ function runSimulation() {
 				document.getElementById("B_demand").style.display = 'none';
 				document.getElementById("B_balance").style.display = 'block';
 				document.getElementById("B_supply").style.display = 'none';
+				document.getElementById("B_using").style.display = 'none';
+				document.getElementById("B_minting").style.display = 'none';
 			};
 
 		$('#A_current').html(households[0].get_current()+ " KwH");
