@@ -59,13 +59,18 @@ function loadHouseholds(){
 
 function updateHouseholds(){	
 
-	A.set_generation(Number(document.getElementById('A_generation').value));
-	A.set_consumption(Number(document.getElementById('A_consumption').value));
-	A.set_capacity(Number(document.getElementById('A_capacity').value));
+	if (simulationOn == 0) {
+		return loadHouseholds();
+	}
+	else {
+		A.set_generation(Number(document.getElementById('A_generation').value));
+		A.set_consumption(Number(document.getElementById('A_consumption').value));
+		A.set_capacity(Number(document.getElementById('A_capacity').value));
 
-	B.set_generation(Number(document.getElementById('B_generation').value));
-	B.set_consumption(Number(document.getElementById('B_consumption').value));
-	B.set_capacity(Number(document.getElementById('B_capacity').value));
+		B.set_generation(Number(document.getElementById('B_generation').value));
+		B.set_consumption(Number(document.getElementById('B_consumption').value));
+		B.set_capacity(Number(document.getElementById('B_capacity').value));
+	}
 
 };
 
@@ -73,9 +78,11 @@ function updateHouseholds(){
 var h = 0;
 document.getElementById('clock').innerHTML = "Time " + "0" + h + ":00";
 
+var simulationOn = 0;
 // Simulation
 function runSimulation() {
 	
+	simulationOn = 1;
 	if (BlockChainActive == false) {
 		swal({
 			customClass: "activate-warning",
@@ -123,14 +130,25 @@ function runSimulation() {
 				document.getElementById("A_balance").style.display = 'none';
 				document.getElementById("A_supply").style.display = 'none';
 
-				$('#A_tokens').html(checkUserBalance(web3.eth.accounts[1]));
-				// As A is demanding energy, we check for available coins to exchange for energy
-				// Set status to using
-				document.getElementById("A_using").style.display = 'block';
-				document.getElementById("A_minting").style.display = 'none';
-				$('#A_using').html("<label>Household Singh: Using Tokens</label><div> EBZ account balance is: "
-					  + checkUserBalance(web3.eth.accounts[1]))
-				A.set_current(0);
+				if (checkUserBalance(web3.eth.accounts[1]) > 0)
+				{
+					smartMeterApproval(web3.eth.accounts[3], web3.eth.accounts[1]);
+					burnFrom(web3.eth.accounts[3],web3.eth.accounts[1]);
+					$('#A_tokens').html(checkUserBalance(web3.eth.accounts[1]));
+					// As A is demanding energy, we check for available coins to exchange for energy
+					// Set status to using
+					document.getElementById("A_using").style.display = 'block';
+					document.getElementById("A_minting").style.display = 'none';
+					$('#A_using').html("<label>Household Singh: Using Tokens</label><div> Account balance is: "
+					  + checkUserBalance(web3.eth.accounts[1]) + " EBZ");
+					A.set_current(1);
+				} else {
+					document.getElementById("A_using").style.display = 'block';
+					document.getElementById("A_minting").style.display = 'none';
+					$('#A_using').html("<label> Singh balance unsufficient to purchase energy</label>");
+					A.set_current(0);
+				}
+				
 			} else if (A.get_current() > A.get_capacity()) {
 				// As A is producing more energy than what it can store, we now mint coins
 				// Set status to supplying
@@ -138,7 +156,7 @@ function runSimulation() {
 				document.getElementById("A_balance").style.display = 'none';
 				document.getElementById("A_supply").style.display = 'block';
 				for (i = 0; i < (A.get_current() - A.get_capacity()); i++) {
-					mintTokens(web3.eth.accounts[1],web3.eth.accounts[2]);
+					mintTokens(web3.eth.accounts[1],web3.eth.accounts[0]);
 				};
 				$('#A_tokens').html(checkUserBalance(web3.eth.accounts[1]));
 				document.getElementById("A_minting").style.display = 'block';
@@ -147,7 +165,7 @@ function runSimulation() {
 					  + A.get_current() + " KwH</div><div>Storing capcity is: "
 					  + A.get_capacity() + " KwH</div><div>EnergyBazaar can now mint "
 					  + (A.get_current() - A.get_capacity()) + " KwH for household Singh</div>"
-					  + "Household Singh EBZ account balance is now: " + checkUserBalance(web3.eth.accounts[1]))
+					  + "Household Singh account balance is now: " + checkUserBalance(web3.eth.accounts[1]) + " EBZ");
 				A.set_current(A.get_capacity());
 			} else {
 				// otherwise set to balance
@@ -163,12 +181,24 @@ function runSimulation() {
 				document.getElementById("B_demand").style.display = 'block';
 				document.getElementById("B_balance").style.display = 'none';
 				document.getElementById("B_supply").style.display = 'none';
-				$('#B_tokens').html(checkUserBalance(web3.eth.accounts[2]));
-				document.getElementById("B_using").style.display = 'block';
-				document.getElementById("B_minting").style.display = 'none';
-				$('#B_using').html("<label>Household Chopra: Using Tokens</label><div> EBZ account balance is: "
-					  + checkUserBalance(web3.eth.accounts[2]))
-				B.set_current(0);
+				if (checkUserBalance(web3.eth.accounts[2]) > 0)
+				{	
+					smartMeterApproval(web3.eth.accounts[4], web3.eth.accounts[2]);
+					burnFrom(web3.eth.accounts[4],web3.eth.accounts[2]);
+					$('#B_tokens').html(checkUserBalance(web3.eth.accounts[2]));
+					// As B is demanding energy, we check for available coins to exchange for energy
+					// Set status to using
+					document.getElementById("B_using").style.display = 'block';
+					document.getElementById("B_minting").style.display = 'none';
+					$('#B_using').html("<label>Household Chopra: Using Tokens</label><div> Account balance is: "
+					  + checkUserBalance(web3.eth.accounts[2]) + " EBZ");
+					B.set_current(1);
+				} else {
+					document.getElementById("B_using").style.display = 'block';
+					document.getElementById("B_minting").style.display = 'none';
+					$('#B_using').html("<label>Chopra balance unsufficient to purchase energy</label>");
+					B.set_current(0);
+				}
 			} else if (B.get_current() > B.get_capacity()) {
 				// As B is producing more energy than what it can store, we now mint coins
 				// Set status to supplying
@@ -176,7 +206,7 @@ function runSimulation() {
 				document.getElementById("B_balance").style.display = 'none';
 				document.getElementById("B_supply").style.display = 'block';
 				for (i = 0; i < (B.get_current() - B.get_capacity()); i++) {
-					mintTokens(web3.eth.accounts[2],web3.eth.accounts[1]);
+					mintTokens(web3.eth.accounts[2],web3.eth.accounts[0]);
 				};
 				$('#B_tokens').html(checkUserBalance(web3.eth.accounts[2]));
 				document.getElementById("B_minting").style.display = 'block';
@@ -185,7 +215,7 @@ function runSimulation() {
 					  + B.get_current() + " KwH</div><div>Storing capcity is: "
 					  + B.get_capacity() + " KwH</div><div>EnergyBazaar can now mint "
 					  + (B.get_current() - B.get_capacity()) + " KwH for household Singh</div>"
-					  + "Household Singh EBZ account balance is now: " + checkUserBalance(web3.eth.accounts[2]))
+					  + "Household Singh account balance is now: " + checkUserBalance(web3.eth.accounts[2]) + " EBZ");
 				B.set_current(B.get_capacity());
 			} else {
 				// otherwise set to balance
