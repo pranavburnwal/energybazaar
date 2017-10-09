@@ -36,7 +36,7 @@ contract MyToken {
     // Minting Tokens
     // For functions that require only supplier usage
     modifier onlySupplier {
-      require(msg.sender != supplier);
+      require(msg.sender == supplier);
       _;
     }
 
